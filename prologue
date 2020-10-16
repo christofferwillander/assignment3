@@ -1,3 +1,6 @@
+.data
+	formatString: .asciz "%d\n"
+	
 .bss
 	a: .quad 0
 	b: .quad 0

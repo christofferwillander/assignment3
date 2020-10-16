@@ -11,7 +11,7 @@ int ex(nodeType *p) {
     if (!p) return 0;
     switch(p->type) {
     case typeCon:       
-        printf("\tpush\t%d\n", p->con.value);
+        printf("\tpush\t$%d\n", p->con.value);
         break;
     case typeId:        
         printf("\tpush\t%c\n", p->id.i + 'a'); 
@@ -21,7 +21,7 @@ int ex(nodeType *p) {
         case WHILE:
             printf("L%03d:\n", lbl1 = lbl++);
             ex(p->opr.op[0]);
-            printf("\tjz\tL%03d\n", lbl2 = lbl++);
+            lbl2 = lbl++;
             ex(p->opr.op[1]);
             printf("\tjmp\tL%03d\n", lbl1);
             printf("L%03d:\n", lbl2);
@@ -30,7 +30,7 @@ int ex(nodeType *p) {
             ex(p->opr.op[0]);
             if (p->opr.nops > 2) {
                 /* if else */
-                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                lbl1 = lbl++;
                 ex(p->opr.op[1]);
                 printf("\tjmp\tL%03d\n", lbl2 = lbl++);
                 printf("L%03d:\n", lbl1);
@@ -38,14 +38,17 @@ int ex(nodeType *p) {
                 printf("L%03d:\n", lbl2);
             } else {
                 /* if */
-                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                lbl1 = lbl++;
                 ex(p->opr.op[1]);
                 printf("L%03d:\n", lbl1);
             }
             break;
         case PRINT:     
             ex(p->opr.op[0]);
-            printf("\tprint\n");
+            printf("\tmovq\t$formatString, %%rdi\n");
+            printf("\tpop\t%%rsi\n");
+            printf("\txor\t%%rax, %%rax\n");
+            printf("\tcall\tprintf\n");
             break;
         case '=':       
             ex(p->opr.op[1]);
@@ -69,42 +72,67 @@ int ex(nodeType *p) {
             switch(p->opr.oper) {
                 case GCD:   
                     printf("\tcall\tgcd\n"); 
+                    printf("\tpush\t%%rax\n");
                     break;
                 case '+':
                     printf("\tpop\t%%r8\n");
                     printf("\tpop\t%%r9\n");   
-                    printf("\tadd\t%%r9, %%r8\n"); 
-                    printf("\tpush\t%%r8\n");
+                    printf("\tadd\t%%r8, %%r9\n"); 
+                    printf("\tpush\t%%r9\n");
                     break;
                 case '-':   
                     printf("\tpop\t%%r8\n");
                     printf("\tpop\t%%r9\n");   
-                    printf("\tsub\t%%r9, %%r8\n");
-                    printf("\tpush\t%%r8\n");  
+                    printf("\tsub\t%%r8, %%r9\n");
+                    printf("\tpush\t%%r9\n");  
                     break; 
-                case '*':   
-                    printf("\tmul\n"); 
+                case '*':
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");   
+                    printf("\timul\t%%r8, %%r9\n");
+                    printf("\tpush\t%%r9\n"); 
                     break;
                 case '/':   
-                    printf("\tdiv\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");   
+                    printf("\tdivs\t%%r8, %%r9\n");
+                    printf("\tpush\t%%r9\n");
                     break;
                 case '<':   
-                    printf("\tcompLT\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");
+                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tjge\tL%03d\n", lbl2 = lbl);
                     break;
                 case '>':   
-                    printf("\tcompGT\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");
+                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tjle\tL%03d\n", lbl2 = lbl);
                     break;
                 case GE:    
-                    printf("\tcompGE\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");
+                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tjl\tL%03d\n", lbl2 = lbl);
                     break;
                 case LE:    
-                    printf("\tcompLE\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");
+                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tjg\tL%03d\n", lbl2 = lbl); 
                     break;
                 case NE:    
-                    printf("\tcompNE\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");
+                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tjz\tL%03d\n", lbl2 = lbl);
                     break;
                 case EQ:    
-                    printf("\tcompEQ\n"); 
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");
+                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tjne\tL%03d\n", lbl2 = lbl);
                     break;
             }
         }
