@@ -22,5 +22,6 @@ fi
 
 fileName=$(echo "$1" | grep -Eo "^[^\.]+")
 touch $fileName
-
-./bin/calc3i.exe < ./$1 > $fileName.s
+cat prologue > $fileName.s
+./bin/calc3i.exe < ./$1 >> $fileName.s
+cat epilogue >> $fileName.s
