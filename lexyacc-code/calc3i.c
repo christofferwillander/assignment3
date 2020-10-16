@@ -70,7 +70,9 @@ int ex(nodeType *p) {
             ex(p->opr.op[0]);
             ex(p->opr.op[1]);
             switch(p->opr.oper) {
-                case GCD:   
+                case GCD:
+                    printf("\tpop\t%%rdi\n");
+                    printf("\tpop\t%%rsi\n");
                     printf("\tcall\tgcd\n"); 
                     printf("\tpush\t%%rax\n");
                     break;
