@@ -11,7 +11,7 @@ int ex(nodeType *p) {
     if (!p) return 0;
     switch(p->type) {
     case typeCon:       
-        printf("\tpush\t%d\n", p->con.value); 
+        printf("\tpush\t%d\n", p->con.value);
         break;
     case typeId:        
         printf("\tpush\t%c\n", p->id.i + 'a'); 
@@ -67,17 +67,45 @@ int ex(nodeType *p) {
             ex(p->opr.op[0]);
             ex(p->opr.op[1]);
             switch(p->opr.oper) {
-                case GCD:   printf("\tcall\tgcd\n"); break;
-                case '+':   printf("\tadd\n"); break;
-                case '-':   printf("\tsub\n"); break; 
-                case '*':   printf("\tmul\n"); break;
-                case '/':   printf("\tdiv\n"); break;
-                case '<':   printf("\tcompLT\n"); break;
-                case '>':   printf("\tcompGT\n"); break;
-                case GE:    printf("\tcompGE\n"); break;
-                case LE:    printf("\tcompLE\n"); break;
-                case NE:    printf("\tcompNE\n"); break;
-                case EQ:    printf("\tcompEQ\n"); break;
+                case GCD:   
+                    printf("\tcall\tgcd\n"); 
+                    break;
+                case '+':
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");   
+                    printf("\tadd\t%%r9, %%r8\n"); 
+                    printf("\tpush\t%%r8\n");
+                    break;
+                case '-':   
+                    printf("\tpop\t%%r8\n");
+                    printf("\tpop\t%%r9\n");   
+                    printf("\tsub\t%%r9, %%r8\n");
+                    printf("\tpush\t%%r8\n");  
+                    break; 
+                case '*':   
+                    printf("\tmul\n"); 
+                    break;
+                case '/':   
+                    printf("\tdiv\n"); 
+                    break;
+                case '<':   
+                    printf("\tcompLT\n"); 
+                    break;
+                case '>':   
+                    printf("\tcompGT\n"); 
+                    break;
+                case GE:    
+                    printf("\tcompGE\n"); 
+                    break;
+                case LE:    
+                    printf("\tcompLE\n"); 
+                    break;
+                case NE:    
+                    printf("\tcompNE\n"); 
+                    break;
+                case EQ:    
+                    printf("\tcompEQ\n"); 
+                    break;
             }
         }
     }
