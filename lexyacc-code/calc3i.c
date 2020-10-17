@@ -11,10 +11,10 @@ int ex(nodeType *p) {
     if (!p) return 0;
     switch(p->type) {
     case typeCon:       
-        printf("\tpush\t$%d\n", p->con.value);
+        printf("\tpushq\t$%d\n", p->con.value);
         break;
     case typeId:        
-        printf("\tpush\t%c\n", p->id.i + 'a'); 
+        printf("\tpushq\t%c\n", p->id.i + 'a'); 
         break;
     case typeOpr:
         switch(p->opr.oper) {
@@ -45,94 +45,101 @@ int ex(nodeType *p) {
             break;
         case PRINT:     
             ex(p->opr.op[0]);
-            printf("\tmovq\t$formatString, %%rdi\n");
-            printf("\tpop\t%%rsi\n");
-            printf("\txor\t%%rax, %%rax\n");
+            printf("\tpopq\t%%rsi\n");
+            printf("\tleaq\tformatString, %%rdi\n");
+            printf("\txorq\t%%rax, %%rax\n");
             printf("\tcall\tprintf\n");
             break;
         case '=':       
             ex(p->opr.op[1]);
-            printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a');
+            printf("\tpopq\t%c\n", p->opr.op[0]->id.i + 'a');
             break;
         case UMINUS:    
             ex(p->opr.op[0]);
-            printf("\tneg\n");
+            printf("\tpopq\t%%r8\n");
+            printf("\tnegq\t%%r8\n");
+            printf("\tpushq\t%%r8\n");
             break;
 	case FACT:
   	    ex(p->opr.op[0]);
-	    printf("\tfact\n");
+	    printf("\tpopq\t%%rdi\n");
+	    printf("\tcall\tfact\n");
+        printf("\tpushq\t%%rax\n");
 	    break;
 	case LNTWO:
 	    ex(p->opr.op[0]);
-	    printf("\tlntwo\n");
+        printf("\tpopq\t%%rdi\n");
+	    printf("\tcall\tlntwo\n");
+        printf("\tpushq\t%%rax\n");
 	    break;
         default:
             ex(p->opr.op[0]);
             ex(p->opr.op[1]);
             switch(p->opr.oper) {
                 case GCD:
-                    printf("\tpop\t%%rdi\n");
-                    printf("\tpop\t%%rsi\n");
+                    printf("\tpopq\t%%rdi\n");
+                    printf("\tpopq\t%%rsi\n");
                     printf("\tcall\tgcd\n"); 
-                    printf("\tpush\t%%rax\n");
+                    printf("\tpushq\t%%rax\n");
                     break;
                 case '+':
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");   
-                    printf("\tadd\t%%r8, %%r9\n"); 
-                    printf("\tpush\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");   
+                    printf("\taddq\t%%r8, %%r9\n"); 
+                    printf("\tpushq\t%%r9\n");
                     break;
                 case '-':   
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");   
-                    printf("\tsub\t%%r8, %%r9\n");
-                    printf("\tpush\t%%r9\n");  
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");   
+                    printf("\tsubq\t%%r8, %%r9\n");
+                    printf("\tpushq\t%%r9\n");  
                     break; 
                 case '*':
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");   
-                    printf("\timul\t%%r8, %%r9\n");
-                    printf("\tpush\t%%r9\n"); 
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");   
+                    printf("\timulq\t%%r8, %%r9\n");
+                    printf("\tpushq\t%%r9\n"); 
                     break;
-                case '/':   
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");   
-                    printf("\tdivs\t%%r8, %%r9\n");
-                    printf("\tpush\t%%r9\n");
+                case '/':
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%rax\n");
+                    printf("\tcqto\n");
+                    printf("\tidivq\t%%r8\n");
+                    printf("\tpushq\t%%rax\n");
                     break;
                 case '<':   
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");
                     printf("\tcmp\t%%r8, %%r9\n");
                     printf("\tjge\tL%03d\n", lbl2 = lbl);
                     break;
                 case '>':   
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");
                     printf("\tcmp\t%%r8, %%r9\n");
                     printf("\tjle\tL%03d\n", lbl2 = lbl);
                     break;
                 case GE:    
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");
                     printf("\tcmp\t%%r8, %%r9\n");
                     printf("\tjl\tL%03d\n", lbl2 = lbl);
                     break;
                 case LE:    
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");
                     printf("\tcmp\t%%r8, %%r9\n");
                     printf("\tjg\tL%03d\n", lbl2 = lbl); 
                     break;
                 case NE:    
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");
                     printf("\tcmp\t%%r8, %%r9\n");
                     printf("\tjz\tL%03d\n", lbl2 = lbl);
                     break;
                 case EQ:    
-                    printf("\tpop\t%%r8\n");
-                    printf("\tpop\t%%r9\n");
+                    printf("\tpopq\t%%r8\n");
+                    printf("\tpopq\t%%r9\n");
                     printf("\tcmp\t%%r8, %%r9\n");
                     printf("\tjne\tL%03d\n", lbl2 = lbl);
                     break;
