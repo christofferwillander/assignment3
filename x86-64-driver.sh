@@ -40,4 +40,4 @@ cat prologue > $fileName.s
 ./bin/calc3i.exe < ./$1 >> $fileName.s
 cat epilogue >> $fileName.s
 
-gcc -Llib -lfunctions -g $fileName.s -o $fileName -no-pie
+gcc -Llib -g $fileName.s -o $fileName -no-pie -lfunctions

@@ -1,9 +1,6 @@
 .text
-
 .globl gcd
 gcd:
-.globl main
-main:
 	movq 	%rdi, %r8
 	movq 	%rsi, %r9
 
