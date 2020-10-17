@@ -20,3 +20,4 @@ zeroend:
 	movq	$1, %r8
 end:
 	movq	%r8, %rax
+    ret
