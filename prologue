@@ -1,5 +1,5 @@
 .data
-	formatString: .asciz "%d\n"
+	formatString: .asciz "%qd\n"
 	
 .bss
 	a: .quad 0
