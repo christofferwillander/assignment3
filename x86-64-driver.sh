@@ -2,7 +2,7 @@
 
 # Showing proper script usage to user
 USAGE="Usage: $0 <file.calc>"
-NOTE="N.B. input file has to be located in CWD"
+NOTE="N.B. input file should be located in CWD"
 
 
 if [ $# -lt 1 ] || [ $# -gt 1 ]; then
@@ -40,4 +40,4 @@ cat prologue > $fileName.s
 ./bin/calc3i.exe < ./$1 >> $fileName.s
 cat epilogue >> $fileName.s
 
-gcc -g $fileName.s -o $fileName -no-pie
+gcc -Llib -lfunctions -g $fileName.s -o $fileName -no-pie
