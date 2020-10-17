@@ -4,9 +4,9 @@ fact:
 	movq 	%rdi, %r9
 	cmpq	$0, %r9
 	jz	zeroend
-	cmp	$1, %r9
+	cmpq	$1, %r9
 	jz	zeroend
-    movq $1, %r8
+    	movq $1, %r8
 	jmp	notzero
 
 notzero:
@@ -18,6 +18,7 @@ notzero:
 
 zeroend:
 	movq	$1, %r8
+
 end:
 	movq	%r8, %rax
-    ret
+    	ret
