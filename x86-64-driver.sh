@@ -26,4 +26,4 @@ cat prologue > $fileName.s
 ./bin/calc3i.exe < ./$1 >> $fileName.s
 cat epilogue >> $fileName.s
 
-gcc -g -o $fileName $fileName.s -no-pie
+gcc -g $fileName.s -o $fileName -no-pie
