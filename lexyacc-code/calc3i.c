@@ -110,37 +110,37 @@ int ex(nodeType *p) {
                 case '<':   
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%r9\n");
-                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tcmpq\t%%r8, %%r9\n");
                     printf("\tjge\tL%03d\n", lbl2 = lbl);
                     break;
                 case '>':   
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%r9\n");
-                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tcmpq\t%%r8, %%r9\n");
                     printf("\tjle\tL%03d\n", lbl2 = lbl);
                     break;
                 case GE:    
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%r9\n");
-                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tcmpq\t%%r8, %%r9\n");
                     printf("\tjl\tL%03d\n", lbl2 = lbl);
                     break;
                 case LE:    
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%r9\n");
-                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tcmpq\t%%r8, %%r9\n");
                     printf("\tjg\tL%03d\n", lbl2 = lbl); 
                     break;
                 case NE:    
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%r9\n");
-                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tcmpq\t%%r8, %%r9\n");
                     printf("\tjz\tL%03d\n", lbl2 = lbl);
                     break;
                 case EQ:    
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%r9\n");
-                    printf("\tcmp\t%%r8, %%r9\n");
+                    printf("\tcmpq\t%%r8, %%r9\n");
                     printf("\tjne\tL%03d\n", lbl2 = lbl);
                     break;
             }
