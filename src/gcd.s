@@ -9,6 +9,10 @@ gcd:
 	jz		isZero
 	cmpq	%r8, %r9
 	jz		isEqual
+	cmpq	$0, %r8
+	jl		op1Neg
+	cmpq	$0, %r9
+	jl		op2Neg
 
 while:
 	cmpq 	%r9, %r8
@@ -36,3 +40,13 @@ isZero:
 
 isEqual:
 	jmp		end
+
+op1Neg:
+	negq	%r8
+	cmpq	$0, %r9
+	jl		op2Neg
+	jmp		while
+
+op2Neg:
+	negq	%r9
+	jmp		while
