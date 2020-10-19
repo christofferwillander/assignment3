@@ -1,6 +1,8 @@
 .text
 .globl gcd
 gcd:
+	pushq	%r9
+	pushq	%r8
 	movq 	%rdi, %r8
 	movq 	%rsi, %r9
 	cmpq	$0,	%r8
@@ -31,6 +33,8 @@ else:
 
 end:
 	movq 	%r8, %rax
+	popq	%r8
+	popq	%r9
 	ret
 
 isZero:
