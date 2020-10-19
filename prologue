@@ -1,5 +1,5 @@
 .data
-	formatString: .asciz "%qd\n"
+	outputString: .space 64
 	
 .bss
 	a: .quad 0
@@ -28,7 +28,7 @@
 	x: .quad 0
 	y: .quad 0
 	z: .quad 0
-
+	
 .text
 
 .globl main
