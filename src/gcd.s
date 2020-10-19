@@ -5,31 +5,31 @@ gcd:
 	pushq	%r8
 	movq 	%rdi, %r8
 	movq 	%rsi, %r9
-	cmpq	$0,	%r8
-	jz		isZero
-	cmpq	$0, %r9
-	jz		isZero
-	cmpq	%r8, %r9
-	jz		isEqual
 	cmpq	$0, %r8
-	jl		op1Neg
+	jz	isZero
 	cmpq	$0, %r9
-	jl		op2Neg
+	jz	isZero
+	cmpq	%r8, %r9
+	jz	isEqual
+	cmpq	$0, %r8
+	jl	op1Neg
+	cmpq	$0, %r9
+	jl	op2Neg
 
 while:
 	cmpq 	%r9, %r8
-	jz		end
+	jz	end
 	cmpq	%r9, %r8
-	jle		else
-	jmp		if
+	jle	else
+	jmp	if
 
 if:
 	subq	%r9, %r8
-	jmp		while
+	jmp	while
 
 else:
 	subq	%r8, %r9
-	jmp		while
+	jmp	while
 
 end:
 	movq 	%r8, %rax
@@ -43,14 +43,14 @@ isZero:
 	jmp 	end
 
 isEqual:
-	jmp		end
+	jmp	end
 
 op1Neg:
 	negq	%r8
 	cmpq	$0, %r9
-	jl		op2Neg
-	jmp		while
+	jl	op2Neg
+	jmp	while
 
 op2Neg:
 	negq	%r9
-	jmp		while
+	jmp	while
