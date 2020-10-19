@@ -1,7 +1,9 @@
 .text
 .globl fact
 fact:
-	xorq	%r10, %r10
+	pushq	%r9
+	pushq	%r8
+	xorq	%r9, %r9
 	movq 	%rdi, %rax
 	cqto
 	cmpq	$0, %rax
@@ -22,15 +24,17 @@ notzero:
 	jmp	notzero
 
 zeroend:
-	movq	$1, %r8
+	movq	$1, %rax
 
 end:
-	cmpq	$1, %r10
+	cmpq	$1, %r9
 	jz	negativeend
+	popq	%r8
+	popq	%r9
     	ret
 
 negative:
-	movq	$1, %r10
+	movq	$1, %r9
 	negq	%rax
 	movq	%rax, %r8
 	subq	$1, %r8	
@@ -38,5 +42,7 @@ negative:
 
 negativeend:
 	negq	%rax
+	popq	%r8
+	popq	%r9
 	ret
 
