@@ -45,10 +45,14 @@ int ex(nodeType *p) {
             break;
         case PRINT:     
             ex(p->opr.op[0]);
-            printf("\tpopq\t%%rsi\n");
-            printf("\tleaq\tformatString, %%rdi\n");
-            printf("\txorq\t%%rax, %%rax\n");
-            printf("\tcall\tprintf\n");
+            printf("\tpopq\t%%rdi\n");
+            printf("\tleaq\toutputString, %%rsi\n");
+            printf("\tcall\tnumToASCII\n");
+            printf("\tmovq\t%%rax, %%rdx\n");
+            printf("\tmovq\t$1, %%rax\n");
+            printf("\tmovq\t$1, %%rdi\n");
+            printf("\tleaq\toutputString, %%rsi\n");
+            printf("\tsyscall\n");
             break;
         case '=':       
             ex(p->opr.op[1]);
