@@ -6,6 +6,8 @@ numToASCII:
         pushq   %r10
         pushq   %r9
         pushq   %r8
+        cmpq    $0, %rbx
+        jl      terminateEarly
         movq    %rdi, %rax      # Moving integer to be divided into %rax
         movq    $0, %r9         # Initializing counter to 0
         movq    $10, %r8        # Moving divisor into %r8
@@ -55,3 +57,23 @@ isNegative:
         incq    %rsi            # Increment outputString pointer
         jmp     divisionLoop    # Start division
 
+terminateEarly:
+        movq    $7, %rax
+        movq    $'E', (%rsi)
+        incq    %rsi
+        movq    $'R', (%rsi)
+        incq    %rsi
+        movq    $'R', (%rsi)
+        incq    %rsi
+        movq    $'O', (%rsi)
+        incq    %rsi
+        movq    $'R', (%rsi)
+        incq    %rsi
+        movq    $'\n', (%rsi)
+        incq    %rsi
+        movq    $0, (%rsi)
+        popq    %r8             
+        popq    %r9
+        popq    %r10
+        popq    %r11
+        ret
