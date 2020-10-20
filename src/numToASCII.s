@@ -1,55 +1,56 @@
 .text
 .globl numToASCII
 numToASCII:
+        # Pushing register %r8 through %r11 - to preserve values
         pushq   %r11
         pushq   %r10
         pushq   %r9
         pushq   %r8
-        movq    %rdi, %rax
-        movq    $0, %r9
-        movq    $10, %r8
-        cqto
-        cmpq    $0, %rax
+        movq    %rdi, %rax      # Moving integer to be divided into %rax
+        movq    $0, %r9         # Initializing counter to 0
+        movq    $10, %r8        # Moving divisor into %r8
+        cqto                    
+        cmpq    $0, %rax        # Checking for a negative number (to insert '-' sign)
         jl      isNegative
-        movq    $0, %r11
+        movq    $0, %r11        # Setting string length increment to 0 (no additional '-' sign inserted)
 
 divisionLoop:
-        xorq    %rdx, %rdx
-        divq    %r8
-        pushq   %rdx
-        incq    %r9
-        cmpq    $0, %rax
+        xorq    %rdx, %rdx      # Zeroing out register for remainder
+        divq    %r8             # Dividing %rax by %r8
+        pushq   %rdx            # Pushing remainder to stack
+        incq    %r9             # Incrementing string length counter
+        cmpq    $0, %rax        # Checking if %rax is yet 0 - if so, we are done - otherwise repeat
         jne     divisionLoop
-        movq    $0, %r10
+        movq    $0, %r10        # Initalizing 'popping' counter to 0
 
 popReverse:
-        pop     %rax
-        addq    $'0', %rax
-        movq    %rax, (%rsi)
-        incq    %rsi
-        incq    %r10
-        cmpq    %r9, %r10
+        pop     %rax            # Popping integer from stack into rax
+        addq    $'0', %rax      # Adding '0' (hex 48) to get corresponding ASCII character
+        movq    %rax, (%rsi)    # Moving into outputString
+        incq    %rsi            # Incrementing outputString pointer
+        incq    %r10            # Incrementing 'popping' counter
+        cmpq    %r9, %r10       # Check if all elements have been popped - otherwise repeat
         jz      finished
         jmp     popReverse
 
 
 finished:
-        movq    $'\n', (%rsi)
+        movq    $'\n', (%rsi)   # Add \n to string
         incq    %rsi
-        movq    $0, (%rsi)
-        addq    $2, %r9
-        addq    %r11, %r9
-        movq    %r9, %rax
-        popq    %r8
+        movq    $0, (%rsi)      # Add null termination to end of string
+        addq    $2, %r9         # Increment string length by 2 to accomodate new symbols
+        addq    %r11, %r9       # Add length for additional '-' sign (if present)
+        movq    %r9, %rax       # Move string length to return register %rax
+        popq    %r8             # Restore values in registers %r8 through %r11
         popq    %r9
         popq    %r10
         popq    %r11
         ret
 
 isNegative:
-        negq    %rax
-        movq    $1, %r11
-        movq    $'-', (%rsi)
-        incq    %rsi
-        jmp     divisionLoop
+        negq    %rax            # Negate %rax (to work with a positive value)
+        movq    $1, %r11        # Move additional length for '-' sign to %r11
+        movq    $'-', (%rsi)    # Insert '-' sign into outputString
+        incq    %rsi            # Increment outputString pointer
+        jmp     divisionLoop    # Start division
 
