@@ -45,13 +45,13 @@ int ex(nodeType *p) {
             break;
         case PRINT:     
             ex(p->opr.op[0]);
-            printf("\tpopq\t%%rdi\n");
-            printf("\tleaq\toutputString, %%rsi\n");
-            printf("\tcall\tnumToASCII\n");
-            printf("\tmovq\t%%rax, %%rdx\n");
-            printf("\tmovq\t$1, %%rax\n");
-            printf("\tmovq\t$1, %%rdi\n");
-            printf("\tleaq\toutputString, %%rsi\n");
+            printf("\tpopq\t%%rdi\t# Popping number to convert to ASCII into %%rdi\n");
+            printf("\tleaq\toutputString, %%rsi\t# Loading address of outputString into %%rsi\n");
+            printf("\tcall\tnumToASCII\t# Calling numToASCII function to convert number to ASCII string\n");
+            printf("\tmovq\t%%rax, %%rdx\t# Moving return value in %%rax (string length) into %%rdx\n");
+            printf("\tmovq\t$1, %%rax\t# Setting syscall to 1 (write) in %%rax\n");
+            printf("\tmovq\t$1, %%rdi\t# Setting output buffer to 1 (STDOUT) in %%rdi\n");
+            printf("\tleaq\toutputString, %%rsi\t# Loading address of output string into %%rsi\n");
             printf("\tsyscall\n");
             break;
         case '=':       
