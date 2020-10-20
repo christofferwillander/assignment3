@@ -73,8 +73,6 @@ int ex(nodeType *p) {
 	case LNTWO:
 	    ex(p->opr.op[0]);
         printf("\tpopq\t%%rdi\n");
-        printf("\tleaq\tlogErrorString1, %%rsi\n");
-        printf("\tleaq\tlogErrorString2, %%rdx\n");
 	    printf("\tcall\tlntwo\n");
         printf("\tpushq\t%%rax\n");
 	    break;

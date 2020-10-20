@@ -24,12 +24,12 @@ zeroExit:
 
 notExist:
     movq    $-1, %rbx;
-    pushq   $0
+    movq    $0, %rax
     ret
 
 negativeCase:
     movq    $-2, %rbx
-    pushq   $0
+    movq    $0, %rax
     ret
 
 end:

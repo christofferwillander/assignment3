@@ -72,6 +72,7 @@ terminateEarly:
         movq    $'\n', (%rsi)
         incq    %rsi
         movq    $0, (%rsi)
+        movq    $0, %rbx
         popq    %r8             
         popq    %r9
         popq    %r10
