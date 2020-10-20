@@ -1,5 +1,6 @@
 .data
 	outputString: .space 64
+	logErrorString: .asciz "ERROR: Binary logarithm of negative numbers is not defined\n"
 	
 .bss
 	a: .quad 0
