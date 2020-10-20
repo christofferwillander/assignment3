@@ -1,7 +1,6 @@
 .text
 .globl numToASCII
-numToASCII:
-                                # Pushing register %r8 through %r11 - to preserve values
+numToASCII:                     # Pushing register %r8 through %r11 - to preserve values
         pushq   %r11
         pushq   %r10
         pushq   %r9
@@ -47,8 +46,7 @@ finished:
         popq    %r9
         popq    %r10
         popq    %r11
-                                # Restoring values in registers %r8 through %r11 before returning
-        ret
+        ret                     # Restoring values in registers %r8 through %r11 before returning
 
 isNegative:
         negq    %rax            # Negate %rax (to work with a positive value)
@@ -57,7 +55,7 @@ isNegative:
         incq    %rsi            # Increment outputString pointer
         jmp     divisionLoop    # Start division
 
-terminateEarly:
+terminateEarly:                 # Function for generating 'ERROR' string - used for errors in lntwo function (negative & zero input values)
         movq    $7, %rax
         movq    $'E', (%rsi)
         incq    %rsi
@@ -77,4 +75,4 @@ terminateEarly:
         popq    %r9
         popq    %r10
         popq    %r11
-        ret
+        ret                     # Restoring values in registers %r8 through %r11 before returning

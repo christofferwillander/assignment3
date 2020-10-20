@@ -1,4 +1,4 @@
 
-	movq $60, %rax	# Moving 60 into %rax (syscall exit)
-	movq $0, %rdi
+	movq $60, %rax	# Setting syscall to 60 (exit) in %rax
+	movq $0, %rdi	# Setting return value to 0 in %rdi (success)
 	syscall

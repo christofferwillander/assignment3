@@ -1,8 +1,8 @@
 .text
 .globl lntwo
 lntwo:
-    xorq    %r10, %r10          # zero out r10
-    movq    %rdi, %rax          # move the input value to rax
+    xorq    %r10, %r10          # zero out %r10
+    movq    %rdi, %rax          # move the input value to %rax
     cmpq    $0, %rax
     jl      negativeCase
     cmpq    $0, %rax
@@ -12,10 +12,10 @@ lntwo:
     jmp     loop
 
 loop:                           # loop function to calculate the binary logarithm
-    shrq    $1, %rax            # shift rax to the right to divide by 2
+    shrq    $1, %rax            # shift %rax to the right to divide by 2
     cmpq    $0, %rax
     jle     end
-    incq    %r10                # r10 is used as a counter
+    incq    %r10                # %r10 is used as a counter
     jmp     loop
 
 zeroExit:                       # if the input value is 1
