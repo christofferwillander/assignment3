@@ -1,6 +1,7 @@
 .text
 .globl lntwo
 lntwo:
+    pushq   %r10                # pushing %r10 - to preserve value
     xorq    %r10, %r10          # zero out %r10
     movq    %rdi, %rax          # move the input value to %rax
     cmpq    $0, %rax
@@ -25,13 +26,16 @@ zeroExit:                       # if the input value is 1
 notExist:                       # if the input value is 0
     movq    $-1, %rbx;          # check value for numToASCII library
     movq    $0, %rax
+    popq    %r10                # popping value into %r10 - to restore value
     ret
 
 negativeCase:                   # if the input value is negative
     movq    $-2, %rbx           # check value for numToASCII library
     movq    $0, %rax
+    popq    %r10                # popping value into %r10 - to restore value
     ret
 
 end:                            # move the result to %rax and return
     movq    %r10, %rax
+    popq    %r10                # popping value into %r10 - to restore value
     ret
