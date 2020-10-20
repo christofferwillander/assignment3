@@ -1,7 +1,7 @@
 .text
 .globl numToASCII
 numToASCII:
-        # Pushing register %r8 through %r11 - to preserve values
+                                # Pushing register %r8 through %r11 - to preserve values
         pushq   %r11
         pushq   %r10
         pushq   %r9
@@ -29,22 +29,23 @@ popReverse:
         movq    %rax, (%rsi)    # Moving into outputString
         incq    %rsi            # Incrementing outputString pointer
         incq    %r10            # Incrementing 'popping' counter
-        cmpq    %r9, %r10       # Check if all elements have been popped - otherwise repeat
+        cmpq    %r9, %r10       # Checking if all elements have been popped - otherwise repeat
         jz      finished
         jmp     popReverse
 
 
 finished:
-        movq    $'\n', (%rsi)   # Add \n to string
+        movq    $'\n', (%rsi)   # Adding '\n' to string
         incq    %rsi
-        movq    $0, (%rsi)      # Add null termination to end of string
+        movq    $0, (%rsi)      # Adding NULL termination to end of string
         addq    $2, %r9         # Increment string length by 2 to accomodate new symbols
-        addq    %r11, %r9       # Add length for additional '-' sign (if present)
-        movq    %r9, %rax       # Move string length to return register %rax
-        popq    %r8             # Restore values in registers %r8 through %r11
+        addq    %r11, %r9       # Adding length for additional '-' sign (if present)
+        movq    %r9, %rax       # Moving string length to return register %rax
+        popq    %r8             
         popq    %r9
         popq    %r10
         popq    %r11
+                                # Restoring values in registers %r8 through %r11 before returning
         ret
 
 isNegative:
