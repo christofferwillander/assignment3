@@ -66,25 +66,25 @@ int ex(nodeType *p) {
             break;
 	case FACT:
   	    ex(p->opr.op[0]);
-	    printf("\tpopq\t%%rdi\n");
+	    printf("\tpopq\t%%rdi\t# Popping input parameter into %%rdi\n");
 	    printf("\tcall\tfact\n");
-        printf("\tpushq\t%%rax\n");
+        printf("\tpushq\t%%rax\t# Pushing return value to stack\n");
 	    break;
 	case LNTWO:
 	    ex(p->opr.op[0]);
-        printf("\tpopq\t%%rdi\n");
-	    printf("\tcall\tlntwo\n");
-        printf("\tpushq\t%%rax\n");
+        printf("\tpopq\t%%rdi\t# Popping input parameter into %%rdi\n");
+	    printf("\tcall\tlntwo\t# Calling lntwo to calculate binary logarithm for input parameter\n");
+        printf("\tpushq\t%%rax\t# Pushing return value to stack\n");
 	    break;
         default:
             ex(p->opr.op[0]);
             ex(p->opr.op[1]);
             switch(p->opr.oper) {
                 case GCD:
-                    printf("\tpopq\t%%rdi\n");
-                    printf("\tpopq\t%%rsi\n");
-                    printf("\tcall\tgcd\n"); 
-                    printf("\tpushq\t%%rax\n");
+                    printf("\tpopq\t%%rdi\t# Popping first input parameter into %%rdi\n");
+                    printf("\tpopq\t%%rsi\t# Popping first input parameter into %%rsi\n");
+                    printf("\tcall\tgcd\t# Calling gcd to calculate GCD for input parameters\n"); 
+                    printf("\tpushq\t%%rax\t# Pushing return value to stack\n");
                     break;
                 case '+':
                     printf("\tpopq\t%%r8\n");
