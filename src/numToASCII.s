@@ -10,14 +10,14 @@ numToASCII:                     # Pushing register %r8 through %r11 - to preserv
         movq    %rdi, %rax      # Moving integer to be divided into %rax
         movq    $0, %r9         # Initializing counter to 0
         movq    $10, %r8        # Moving divisor into %r8
-        cqto                    
+        cqto                    # Converting quad word in %rax into octoword        
         cmpq    $0, %rax        # Checking for a negative number (to insert '-' sign)
         jl      isNegative
         movq    $0, %r11        # Setting string length increment to 0 (no additional '-' sign inserted)
 
 divisionLoop:
         xorq    %rdx, %rdx      # Zeroing out register for remainder
-        divq    %r8             # Dividing %rax by %r8
+        idivq    %r8             # Dividing %rax by %r8
         pushq   %rdx            # Pushing remainder to stack
         incq    %r9             # Incrementing string length counter
         cmpq    $0, %rax        # Checking if %rax is yet 0 - if so, we are done - otherwise repeat
@@ -38,7 +38,7 @@ popReverse:
 finished:
         movq    $'\n', (%rsi)   # Adding '\n' to string
         incq    %rsi
-        movq    $0, (%rsi)      # Adding NULL termination to end of string
+        movq    $0, (%rsi)      # Adding NULL termination ('\0') to end of string
         addq    $2, %r9         # Increment string length by 2 to accomodate new symbols
         addq    %r11, %r9       # Adding length for additional '-' sign (if present)
         movq    %r9, %rax       # Moving string length to return register %rax
