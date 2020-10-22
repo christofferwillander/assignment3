@@ -11,8 +11,8 @@ if [ $# -lt 1 ] || [ $# -gt 1 ]; then
 	exit 1
 fi
 
-fileArg=$(echo "$1" | grep -o ".calc")
 fileName=$(echo "$1" | grep -Eo "^[^\.]+")
+fileArg=$(echo "$1" | grep -o ".calc")
 
 if [ $? -eq 1 ]; then
     echo "ERROR: Invalid file type - provide a .calc file"
