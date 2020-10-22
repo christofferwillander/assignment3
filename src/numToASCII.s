@@ -10,7 +10,7 @@ numToASCII:                     # Pushing register %r8 through %r11 - to preserv
         movq    %rdi, %rax      # Moving integer to be divided into %rax
         movq    $0, %r9         # Initializing counter to 0
         movq    $10, %r8        # Moving divisor into %r8
-        cqto                    # Converting quad word in %rax into octoword        
+        cqto                    # Converting quadword in %rax into octoword (%rdx:%rax)     
         cmpq    $0, %rax        # Checking for a negative number (to insert '-' sign)
         jl      isNegative
         movq    $0, %r11        # Setting string length increment to 0 (no additional '-' sign inserted)
