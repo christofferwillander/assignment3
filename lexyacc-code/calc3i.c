@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "calc3.h"
-#include "y.tab.h"
+#include "./build-dir/y.tab.h"
 
 static int lbl;
 
