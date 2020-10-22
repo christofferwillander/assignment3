@@ -1,5 +1,4 @@
 all:
-	cd lexyacc-code
 	mkdir -p lexyacc-code/build-dir
 	bison -y -d lexyacc-code/calc3.y --output=lexyacc-code/build-dir/y.tab.c
 	flex -o lexyacc-code/build-dir/lex.yy.c lexyacc-code/calc3.l
