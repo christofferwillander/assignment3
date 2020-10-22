@@ -1,9 +1,12 @@
 all:
-	bison -y -d lexyacc-code/calc3.y --output=lexyacc-code/y.tab.c
-	flex -o lexyacc-code/lex.yy.c lexyacc-code/calc3.l
-	gcc -c lexyacc-code/y.tab.c -o lexyacc-code/y.tab.o
-	gcc -c lexyacc-code/lex.yy.c -o lexyacc-code/lex.yy.o
-	gcc lexyacc-code/y.tab.o lexyacc-code/lex.yy.o lexyacc-code/calc3i.c -o bin/calc3i.exe
+	cd lexyacc-code
+	mkdir -p lexyacc-code/build-dir
+	bison -y -d lexyacc-code/calc3.y --output=lexyacc-code/build-dir/y.tab.c
+	flex -o lexyacc-code/build-dir/lex.yy.c lexyacc-code/calc3.l
+	gcc -c lexyacc-code/build-dir/y.tab.c -o lexyacc-code/build-dir/y.tab.o
+	gcc -c lexyacc-code/build-dir/lex.yy.c -o lexyacc-code/build-dir/lex.yy.o
+	gcc lexyacc-code/build-dir/y.tab.o lexyacc-code/build-dir/lex.yy.o lexyacc-code/calc3i.c -o bin/calc3i.exe
+	gcc -g -shared src/*.s -o lib/libfunctions.so
 
 clean:
-	rm -rf lexyacc-code/lex.yy.c lexyacc-code/y.tab.c lexyacc-code/y.tab.h lexyacc-code/lex.yy.o lexyacc-code/y.tab.o bin/calc3i.exe
+	rm -rf lexyacc-code/build-dir bin/calc3i.exe lib/libfunctions.so
