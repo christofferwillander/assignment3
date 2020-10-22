@@ -107,7 +107,7 @@ int ex(nodeType *p) {
                 case '/':
                     printf("\tpopq\t%%r8\n");
                     printf("\tpopq\t%%rax\n");
-                    printf("\tcqto\n");
+                    printf("\tcqto\t# Converting quadword in %%rax into octoword (%%rdx:%%rax)\n");
                     printf("\tidivq\t%%r8\n");
                     printf("\tpushq\t%%rax\n");
                     break;
