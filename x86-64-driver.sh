@@ -36,8 +36,10 @@ if [ $? -eq 1 ]; then
 fi
 
 touch $fileName
-cat prologue > $fileName.s
+cat ./lexyacc-code/prologue > $fileName.s
 ./bin/calc3i.exe < ./$1 >> $fileName.s
-cat epilogue >> $fileName.s
+cat ./lexyacc-code/epilogue >> $fileName.s
 
 gcc -Llib -g $fileName.s -o $fileName -no-pie -lfunctions
+echo "Compilation was successful: $fileName.calc -> $fileName.s -> $fileName"
+echo "Remember to set 'export LD_LIBRARY_PATH' to lib folder before execution"
