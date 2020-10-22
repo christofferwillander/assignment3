@@ -17,7 +17,7 @@ fact:						# pushing registers %r8, %r9 - to preserve values
 	jmp	notzero
 
 notzero:					# calculate the factorial of the input values stored in %rax
-	mulq	%r8				# multtply %rax with %r8 and store the result in %rax
+	imulq	%r8				# multiply %rax with %r8 and store the result in %rax
 	subq	$1, %r8
 	cmpq	$0, %r8				# if %r8 is zero we have reached the end
 	jz	end
